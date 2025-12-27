@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Penjualan Ayam</title>
+    <link rel="stylesheet" href="dashboard.css" />
+    <script>
+      const role = sessionStorage.getItem('role');
+      if (role != 'user' || !role) {
+        alert('FORBIDDEN');
+        document.location.href = '../../templates/auth/auth.html';
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="logo">AyamStore</div>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="product.html" class="active">Produk</a></li>
+        <li><a href="order.html">Pesanan Saya</a></li>
+      </ul>
+      <div class="cart">
+        <img src="img/cart.png" alt="cart" />
+        <!-- <span class="cart-count">0</span> -->
+      </div>
+      <ul class="nav-links">
+        <li><a class="logout">Logout</a></li>
+      </ul>
+    </nav>
+
+    <!-- CONTENT -->
+    <section class="container">
+      <h1>Daftar Produk Ayam</h1>
+
+      <div class="product-grid"></div>
+    </section>
+
+    <script src="js/Product.js"></script>
+    <script src="../js/global.js"></script>
+    <script>
+      window.onload = getProducts();
+    </script>
+  </body>
+</html>

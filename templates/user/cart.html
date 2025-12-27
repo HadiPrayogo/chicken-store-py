@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keranjang | Penjualan Ayam</title>
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="logo">AyamStore</div>
+      <ul class="nav-links">
+        <li><a href="dashboard.html">Home</a></li>
+        <li><a href="product.html">Produk</a></li>
+        <li><a href="order.html">Pesanan Saya</a></li>
+      </ul>
+      <div class="cart">
+        <img src="img/cart.png" alt="cart" />
+        <span class="cart-count">0</span>
+      </div>
+    </nav>
+
+    <!-- CART CONTENT -->
+    <section class="cart-container"></section>
+
+    <script src="js/Cart.js"></script>
+    <script>
+      window.onload = getCart();
+    </script>
+  </body>
+</html>

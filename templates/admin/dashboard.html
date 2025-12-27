@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | Penjualan Ayam</title>
+    <link rel="stylesheet" href="admin-style.css" />
+    <script>
+      const role = sessionStorage.getItem('role');
+      if (role != 'admin' || !role) {
+        alert('FORBIDDEN');
+        document.location.href = '../../templates/auth/auth.html';
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">Admin Panel</div>
+      <ul>
+        <li><a href="index.html" class="active">Dashboard</a></li>
+        <li><a href="product.html">Data Ayam</a></li>
+        <li><a href="order.html">Data Pesanan</a></li>
+        <li><a class="logout">Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content"></main>
+
+    <script src="js/Dashboard.js"></script>
+    <script src="../js/global.js"></script>
+  </body>
+</html>

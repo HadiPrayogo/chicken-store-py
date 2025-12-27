@@ -1,0 +1,357 @@
+/* ==== GLOBAL SETUP ==== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  display: flex;
+  background: #f4f6f9;
+}
+
+/* ==== SIDEBAR ==== */
+.sidebar {
+  width: 230px;
+  background: #1f2937;
+  color: #fff;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 20px;
+}
+
+.sidebar .logo {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  margin: 18px 0;
+}
+
+.sidebar ul li a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 15px;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background: #4b5563;
+  color: #fff;
+}
+
+.sidebar .logout {
+  margin-top: 60px;
+  background: #dc2626;
+  color: #fff !important;
+}
+
+.sidebar .logout:hover {
+  background: #b91c1c;
+}
+
+/* ==== MAIN CONTENT ==== */
+.main-content {
+  margin-left: 230px;
+  padding: 25px;
+  width: calc(100% - 230px);
+}
+
+.main-content h1 {
+  margin-bottom: 6px;
+  color: #111827;
+}
+
+.welcome {
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+/* ==== CARDS ==== */
+.card-container {
+  display: flex;
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 220px;
+  border-left: 6px solid #1d4ed8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  font-size: 17px;
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
+.card .value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1d4ed8;
+}
+
+/* ==== DATA AYAM PAGE ==== */
+
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-add {
+  background: #1d4ed8;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.btn-add:hover {
+  background: #173ea6;
+}
+
+.table {
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  border-collapse: collapse;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+  background: #1f2937;
+  color: #fff;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+.table tbody tr:hover {
+  background: #f7f7f7;
+}
+
+.btn-edit,
+.btn-delete {
+  padding: 6px 10px;
+  font-size: 13px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+.btn-edit {
+  background: #22c55e;
+}
+
+.btn-edit:hover {
+  background: #16a34a;
+}
+
+.btn-delete {
+  background: #dc2626;
+}
+
+.btn-delete:hover {
+  background: #b91c1c;
+}
+
+/* ==== DATA PESANAN PAGE ==== */
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #fff;
+}
+
+.badge.waiting {
+  background: #d97706; /* orange */
+}
+
+.badge.success {
+  background: #16a34a; /* green */
+}
+
+.badge.pending {
+  background: #3b82f6; /* blue */
+}
+
+.badge.shipped {
+  background: #0ea5e9; /* sky */
+}
+
+.btn-detail,
+.btn-status {
+  padding: 6px 10px;
+  font-size: 13px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+.btn-detail {
+  background: #6366f1;
+}
+
+.btn-detail:hover {
+  background: #4f46e5;
+}
+
+.btn-status {
+  background: #f59e0b;
+}
+
+.btn-status:hover {
+  background: #d97706;
+}
+
+/* ==== EDIT AYAM FORM ==== */
+
+.form-card {
+  width: 100%;
+  background: #fff;
+  padding: 20px 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.form-group .note {
+  font-size: 12px;
+  margin-top: 4px;
+  color: #666;
+}
+
+.preview-img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.btn-flex {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-save {
+  background: #22c55e;
+  padding: 10px 16px;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.btn-save:hover {
+  background: #16a34a;
+}
+
+.btn-cancel {
+  background: #dc2626;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 6px;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.btn-cancel:hover {
+  background: #b91c1c;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 13px;
+  font-size: 0.95rem;
+}
+
+/* ==== DETAIL PESANAN PAGE ==== */
+.detail-card {
+  background: #fff;
+  padding: 20px 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
+}
+.detail-card h2 {
+  font-size: 17px;
+  margin-bottom: 10px;
+  color: #1f2937;
+  border-left: 4px solid #1d4ed8;
+  padding-left: 8px;
+}
+.detail-card p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+.mt-20 {
+  margin-top: 20px;
+}
+
+/* ==== UBAH STATUS PESANAN PAGE ==== */
+
+.form-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  border-left: 4px solid #2563eb;
+  padding-left: 10px;
+  color: #1f2937;
+}
