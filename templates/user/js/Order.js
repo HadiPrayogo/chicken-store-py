@@ -115,35 +115,7 @@ async function getOrder() {
     }
   });
 
-  // const btnCancel = document.querySelectorAll('.btn-cancel');
-  // btnCancel.forEach((btn) => {
-  //   btn.addEventListener('click', function (e) {
-  //     e.preventDefault();
-
-  //     const parent = document.querySelectorAll('.items');
-
-  //     let items = [];
-  //     const id = this.value;
-
-  //     parent.forEach((child) => {
-  //       console.log(child);
-  //       if (child.dataset.status != 'Selesai') {
-  //         const nameProduct = child.querySelector('.name-product').textContent.trim();
-  //         const quantity = child.querySelector('.quantity').textContent.trim();
-
-  //         items.push({ product_name: nameProduct, quantity: quantity });
-  //       }
-  //     });
-
-  //     console.log(items);
-  //     // ask = confirm('Yakin?');
-  //     // if (ask) {
-  //     //   cancelOrder(id, items);
-  //     // }
-  //   });
-  // });
-
-  // TOMBOL DETAIL
+  // TOMBOL BAYAR
   const btnBayar = document.querySelectorAll('.btnbayar');
   btnBayar.forEach((btn) => {
     btn.addEventListener('click', function (e) {
@@ -167,7 +139,7 @@ async function cancelOrder(id, items) {
   });
 
   if (res.ok) {
-    document.location.href = '../user/order.html';
+    getOrder();
   }
 }
 
@@ -265,7 +237,7 @@ async function getOneOrder(id) {
 
   const btnBatal = document.querySelector('.btn-batal');
   btnBatal.addEventListener('click', () => {
-    document.location.href = '../user/order.html';
+    getOrder();
   });
 
   const btnBayar = document.querySelector('.btn-bayar');

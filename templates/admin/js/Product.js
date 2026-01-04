@@ -46,7 +46,7 @@ async function getAllProducts() {
       ask = confirm('Yakin Mau Hapus?');
       if (ask) {
         deleteProduct(this.value);
-        window.location.href = 'product.html';
+        getAllProducts();
       }
     });
   });

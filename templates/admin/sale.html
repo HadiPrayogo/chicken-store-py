@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard | Penjualan Ayam</title>
+    <title>Data Pesanan | Admin Panel</title>
     <link rel="stylesheet" href="admin-style.css" />
     <script>
       const role = sessionStorage.getItem('role');
@@ -19,18 +19,38 @@
     <aside class="sidebar">
       <div class="logo">Admin Panel</div>
       <ul>
-        <li><a href="index.html" class="active">Dashboard</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
         <li><a href="product.html">Data Ayam</a></li>
         <li><a href="order.html">Data Pesanan</a></li>
-        <li><a href="sale.html">Data Penjualan</a></li>
+        <li><a href="sale.html" class="active">Data Penjualan</a></li>
         <li><a class="logout">Logout</a></li>
       </ul>
     </aside>
 
     <!-- MAIN CONTENT -->
-    <main class="main-content"></main>
+    <main class="main-content">
+      <h1>Data Penjualan</h1>
 
-    <script src="js/Dashboard.js"></script>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Pembeli</th>
+            <th>Tanggal Pesan</th>
+            <th>Total</th>
+            <th>Status Pesanan</th>
+            <th>Status Pembayaran</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="table-body"></tbody>
+      </table>
+    </main>
+
+    <script src="js/Sale.js"></script>
     <script src="../js/global.js"></script>
+    <script>
+      window.onload = getAllOrder();
+    </script>
   </body>
 </html>

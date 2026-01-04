@@ -45,10 +45,12 @@ def get_carts(
     total_price = 0
     carts = db.query(models.Cart).filter(models.Cart.user_id == current_user.id).all()
 
+    count = len(carts)
+
     for cart in carts:
         total_price += cart.subtotal
 
-    return {"Carts": carts, "total_price": total_price}
+    return {"Carts": carts, "total_price": total_price, "cart_count": count}
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)

@@ -20,7 +20,7 @@ def get_info_dashboard(
 
     total_stok_product = total_stok_product or 0
 
-    orders = db.query(models.Order).all()
+    orders = db.query(models.Order).filter(models.Order.status != "Selesai").all()
     orders_count = len(orders)
 
     return {"products_stok_count": total_stok_product, "orders_count": orders_count}

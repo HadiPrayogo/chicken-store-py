@@ -20,7 +20,6 @@ async function getCart() {
           ${items
             .map((item) => {
               return `<div class="cart-item" data-id="${item.id}">
-                <img src="img/ayam1.jpg" alt="" />
                 <div class="cart-details">
                   <h3 class="name">${item.name_product}</h3>
                   <p>Bobot ± 1 Kg</p>
@@ -141,7 +140,7 @@ async function updateCart(items) {
   });
 
   if (res.ok) {
-    document.location.href = '../user/cart.html';
+    getCart();
   }
 }
 
@@ -153,7 +152,7 @@ async function deleteCart(id) {
     },
   });
   if (res.ok) {
-    document.location.href = '../user/cart.html';
+    getCart();
   }
 }
 

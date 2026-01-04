@@ -29,7 +29,12 @@ def get_all_order(
     if current_user.role != "admin":
         return Response(status_code=status.HTTP_403_FORBIDDEN)
 
-    orders = db.query(models.Order).options(joinedload(models.Order.owner)).all()
+    orders = (
+        db.query(models.Order)
+        .filter(models.Order.status != "Selesai")
+        .options(joinedload(models.Order.owner))
+        .all()
+    )
 
     return orders
 

@@ -18,7 +18,7 @@ class Cart(BaseModel):
 class CartOut(BaseModel):
     Carts: List[Cart]
     total_price: int
-
+    cart_count: int
 
 class CartUpdate(BaseModel):
     id: int

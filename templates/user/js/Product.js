@@ -12,7 +12,7 @@ async function getProducts() {
   const mainContent = document.querySelector('.product-grid');
   mainContent.innerHTML = `<!-- CARD 1 -->
         <div class="product-card">
-          <img src="img/ayam1.jpg" alt="${data.products[0].name}" />
+          <img src="img/ayam-kampung.png" style="height: 400px" alt="${data.products[0].name}" />
           <h3 class="name">${data.products[0].name}</h3>
           ${
             data.products[0].name === 'Ayam Kampung'
@@ -33,7 +33,7 @@ async function getProducts() {
 
         <!-- CARD 2 -->
         <div class="product-card">
-          <img src="img/ayam3.jpg" alt="${data.products[1].name}" />
+          <img src="img/ayam-bangkok.webp" style="height: 400px" alt="${data.products[1].name}" />
           <h3 class="name">${data.products[1].name}</h3>
           ${
             data.products[1].name === 'Ayam Bangkok'

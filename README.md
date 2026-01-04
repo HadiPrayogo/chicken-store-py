@@ -1,4 +1,4 @@
-# Ayam (FastAPI Project)
+# Chicken Store (FastAPI Project)
 
 **Deskripsi singkat** ✅
 
