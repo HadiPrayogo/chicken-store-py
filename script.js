@@ -18,7 +18,6 @@ btnProduct.addEventListener('click', function () {
           <img src="templates/user/img/ayam-kampung.png" style="height: 400px" alt="ayam kampung" />
           <h3>Ayam Kampung</h3>
           <p>Ayam organik berkualitas, bobot ± 1 kg</p>
-          <p>Jumlah : </p><input type="number" class="jumlah">
           <div class="price-btn">
             <span class="price">Rp 45.000</span>
             <button class="btn-add produk">Tambah</a>
@@ -31,7 +30,6 @@ btnProduct.addEventListener('click', function () {
           <img src="templates/user/img/ayam-bangkok.webp" style="height: 400px" alt="ayam bangkok" />
           <h3>Ayam Bangkok</h3>
           <p>Siap Tarung</p>
-          <p>Jumlah : </p><input type="number" class="jumlah">
           <div class="price-btn">
             <span class="price">Rp 300.000</span>
             <button class="btn-add produk">Tambah</a>

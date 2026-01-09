@@ -42,8 +42,8 @@ async function getCart() {
         <div class="cart-summary">
           <h3>Total: <span>Rp ${data.total_price.toLocaleString('id-ID')}</span></h3>
           <div class="cart-button">
-            <button href="payment.php" class="btn-update">Update Keranjang</button>
-            <button href="payment.php" class="btn-checkout">Checkout</button>
+            <button class="btn-update">Update Keranjang</button>
+            <button class="btn-checkout">Checkout</button>
           </div>
         </div>`;
 

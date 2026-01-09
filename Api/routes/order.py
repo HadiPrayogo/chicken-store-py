@@ -195,7 +195,7 @@ def checkout_products(
     cart.delete(synchronize_session=False)
 
     db.commit()
-    return {"message": "Checkout Berhasil"}
+    return {"order_id": new_order.id, "message": "Checkout Berhasil"}
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)

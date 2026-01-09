@@ -23,7 +23,12 @@ async function getAllOrder() {
             })}</td>
             <td>Rp ${d.total_price.toLocaleString('id-ID')}</td>
             <td><span class="badge waiting">${d.status}</span></td>
-            <td><span class="badge pending">${d.payment_status}</span></td>
+            ${
+              d.payment_method === 'COD'
+                ? `<td><span class="badge pending">${d.payment_method}</span></td>`
+                : `<td><span class="badge pending">${d.payment_status}</span></td>`
+            }
+            
             <td>
               <button class="btn-detail" value="${d.id}">Detail</button>
               <button class="btn-detail-payment badge success" value="${

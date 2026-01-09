@@ -54,21 +54,23 @@ async function getOrder() {
     </div>
 
     <div class="order-actions">
+        ${d.status === 'Selesai' ? '<button class="btn-hapus">Hapus</button>' : ``}
+
         ${
-          d.status === 'Selesai'
-            ? '<button class="btn-hapus">Hapus</button>'
+          d.status === 'Dikirim' || d.status === 'Selesai'
+            ? ``
             : `<button class="btn-cancel" value="${d.id}">Batalkan</button>`
         }
 
         ${
           d.payment_status === 'Bukti Tidak Valid'
-            ? `<button class="btn-detail btnbayar" value="${d.id}">Bayar</button>`
+            ? `<button class="btn-detail btnbayar" value="${d.id}">Detail</button>`
             : ''
         }
 
         ${
           d.payment_method === null
-            ? `<button class="btn-detail btnbayar" value="${d.id}">Bayar</button>`
+            ? `<button class="btn-detail btnbayar" value="${d.id}">Detail</button>`
             : ''
         }
     </div>
@@ -94,8 +96,6 @@ async function getOrder() {
 
           items.push({ product_name: nameProduct, quantity: quantity });
         });
-
-        console.log(items);
 
         ask = confirm('Yakin?');
         if (ask) {
@@ -198,7 +198,7 @@ async function getOneOrder(id) {
             <label>Status</label>
             <input type="text" value="${data.payment_status}" readonly />
 
-            <button type="submit" class="btn-bayar" value="${data.id}">Bayar Sekarang</button>
+            <button type="submit" class="btn-bayar" value="${data.id}">Konfirmasi</button>
           </form>
           <button class="btn-batal">Batal</button>
         </div>
@@ -233,11 +233,16 @@ async function getOneOrder(id) {
       const fileInput = document.getElementById('transfer_method');
       fileInput.setAttribute('required', '');
     }
+    if (this.value == 'COD') {
+      containerUpload.style.display = 'none';
+      const fileInput = document.getElementById('transfer_method');
+      fileInput.removeAttribute('required', '');
+    }
   });
 
   const btnBatal = document.querySelector('.btn-batal');
   btnBatal.addEventListener('click', () => {
-    getOrder();
+    document.location.href = '../user/order.html';
   });
 
   const btnBayar = document.querySelector('.btn-bayar');
