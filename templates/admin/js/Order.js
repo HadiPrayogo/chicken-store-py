@@ -1,7 +1,10 @@
 const token = sessionStorage.getItem('access_token');
 
-async function getAllOrder() {
-  const res = await fetch('http://127.0.0.1:8000/order', {
+async function getAllOrder(page = 1) {
+  const limit = 8;
+  const offset = (page - 1) * limit;
+
+  const res = await fetch(`http://127.0.0.1:8000/order?limit=${limit}&offset=${offset}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -10,9 +13,10 @@ async function getAllOrder() {
   const tableBody = document.querySelector('.table-body');
 
   let table = '';
-  let no = 1;
+  let no = offset + 1;
 
-  data.forEach((d) => {
+  const orderData = data.data;
+  orderData.forEach((d) => {
     table += `<tr>
             <td>${no}</td>
             <td>${d.owner.name}</td>
@@ -61,6 +65,11 @@ async function getAllOrder() {
       paymentCheck(id);
     });
   });
+
+  // PAGINATION
+  const totalData = data.total;
+  const totalPage = Math.ceil(totalData / 8);
+  renderPagination(page, totalPage);
 }
 
 async function paymentCheck(id) {
@@ -261,4 +270,34 @@ async function updatePaymentStatus(id, newStatus) {
     alert(data['message']);
     document.location.href = '../admin/order.html';
   }
+}
+
+function renderPagination(currentPage, totalPages) {
+  const btnPageNumber = document.getElementById('pageNumbers');
+  btnPageNumber.innerHTML = '';
+
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  // Atur Status Disabled
+  prevBtn.disabled = currentPage <= 1;
+  nextBtn.disabled = currentPage >= totalPages;
+
+  // Gunakan .onclick untuk menghindari penumpukan event listener
+  prevBtn.onclick = () => {
+    if (currentPage > 1) getAllOrder(currentPage - 1);
+  };
+
+  nextBtn.onclick = () => {
+    if (currentPage < totalPages) getAllOrder(currentPage + 1);
+  };
+
+  for (let i = 1; i <= totalPages; i++) {
+    const activeClass = i === currentPage ? 'active' : '';
+    btnPageNumber.innerHTML += `<button class="page-num ${activeClass}" onclick="getAllOrder(${i})">${i}</button>`;
+  }
+
+  // Update info teks
+  document.getElementById('total-pages-display').innerText = totalPages;
+  document.getElementById('current-page-display').innerText = currentPage;
 }

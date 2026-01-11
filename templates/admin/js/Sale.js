@@ -1,7 +1,10 @@
 const token = sessionStorage.getItem('access_token');
 
-async function getAllOrder() {
-  const res = await fetch('http://127.0.0.1:8000/sales', {
+async function getAllOrder(page = 1) {
+  const limit = 8;
+  const offset = (page - 1) * limit;
+
+  const res = await fetch(`http://127.0.0.1:8000/sales?limit=${limit}&offset=${offset}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -12,7 +15,8 @@ async function getAllOrder() {
   let table = '';
   let no = 1;
 
-  data.forEach((d) => {
+  const saleData = data.data;
+  saleData.forEach((d) => {
     table += `<tr>
             <td>${no}</td>
             <td>${d.owner.name}</td>
@@ -41,6 +45,11 @@ async function getAllOrder() {
       get_detail_order(this.value);
     });
   });
+
+  // PAGINATION
+  const totalData = data.total;
+  const totalPage = Math.ceil(totalData / 8);
+  renderPagination(page, totalPage);
 }
 
 async function get_detail_order(id) {
@@ -52,6 +61,7 @@ async function get_detail_order(id) {
   const data = await res.json();
   const mainContent = document.querySelector('.main-content');
   items = data.items;
+  console.log(items);
   mainContent.innerHTML = `<h1>Detail Pesanan</h1>
 
         <div class="detail-card">
@@ -87,4 +97,34 @@ async function get_detail_order(id) {
                 <a href="sale.html" class="btn-cancel">Kembali</a>
             </div>
         </div>`;
+}
+
+function renderPagination(currentPage, totalPages) {
+  const btnPageNumber = document.getElementById('pageNumbers');
+  btnPageNumber.innerHTML = '';
+
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  // Atur Status Disabled
+  prevBtn.disabled = currentPage <= 1;
+  nextBtn.disabled = currentPage >= totalPages;
+
+  // Gunakan .onclick untuk menghindari penumpukan event listener
+  prevBtn.onclick = () => {
+    if (currentPage > 1) getAllOrder(currentPage - 1);
+  };
+
+  nextBtn.onclick = () => {
+    if (currentPage < totalPages) getAllOrder(currentPage + 1);
+  };
+
+  for (let i = 1; i <= totalPages; i++) {
+    const activeClass = i === currentPage ? 'active' : '';
+    btnPageNumber.innerHTML += `<button class="page-num ${activeClass}" onclick="getAllOrder(${i})">${i}</button>`;
+  }
+
+  // Update info teks
+  document.getElementById('total-pages-display').innerText = totalPages;
+  document.getElementById('current-page-display').innerText = currentPage;
 }

@@ -45,6 +45,25 @@
         </thead>
         <tbody class="table-body"></tbody>
       </table>
+
+      <div class="pagination-container">
+        <div class="pagination-info">
+          Halaman <span id="current-page-display">1</span> dari <span id="total-pages-display">1</span>
+        </div>
+        
+        <div class="pagination-buttons">
+          <button class="btn-page" id="prevBtn" disabled>
+            <i class="fas fa-chevron-left"></i> Prev
+          </button>
+            
+          <div class="page-numbers" id="pageNumbers">
+          </div>
+          
+          <button class="btn-page" id="nextBtn">
+            Next <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
     </main>
 
     <script src="js/Sale.js"></script>

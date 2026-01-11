@@ -1,7 +1,9 @@
 const token = sessionStorage.getItem('access_token');
 
-async function getAllProducts() {
-  const res = await fetch('http://127.0.0.1:8000/products', {
+async function getAllProducts(page = 1) {
+  const limit = 8;
+  const offset = (page - 1) * limit;
+  const res = await fetch(`http://127.0.0.1:8000/products?limit=${limit}&offset=${offset}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -11,10 +13,11 @@ async function getAllProducts() {
   const dataProducts = document.querySelector('.data-products');
 
   let table = '';
+  console.log(data);
 
-  let no = 1;
-
-  data.forEach((d) => {
+  let no = offset + 1;
+  const product_data = data.data;
+  product_data.forEach((d) => {
     table += `<tr>
         <td>${no}</td>
         <td>${d.Product.name}</td>
@@ -50,6 +53,11 @@ async function getAllProducts() {
       }
     });
   });
+
+  // PAGINATION
+  const totalData = data.total;
+  const totalPage = Math.ceil(totalData / 8);
+  renderPagination(page, totalPage);
 }
 
 async function getOneProduct(id) {
@@ -209,3 +217,33 @@ btnAddProducts.addEventListener('click', function () {
     createProducts(name, stok, price);
   });
 });
+
+function renderPagination(currentPage, totalPages) {
+  const btnPageNumber = document.getElementById('pageNumbers');
+  btnPageNumber.innerHTML = '';
+
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  // Atur Status Disabled
+  prevBtn.disabled = currentPage <= 1;
+  nextBtn.disabled = currentPage >= totalPages;
+
+  // Gunakan .onclick untuk menghindari penumpukan event listener
+  prevBtn.onclick = () => {
+    if (currentPage > 1) getAllProducts(currentPage - 1);
+  };
+
+  nextBtn.onclick = () => {
+    if (currentPage < totalPages) getAllProducts(currentPage + 1);
+  };
+
+  for (let i = 1; i <= totalPages; i++) {
+    const activeClass = i === currentPage ? 'active' : '';
+    btnPageNumber.innerHTML += `<button class="page-num ${activeClass}" onclick="getAllProducts(${i})">${i}</button>`;
+  }
+
+  // Update info teks
+  document.getElementById('total-pages-display').innerText = totalPages;
+  document.getElementById('current-page-display').innerText = currentPage;
+}

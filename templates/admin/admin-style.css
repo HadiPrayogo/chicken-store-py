@@ -355,3 +355,82 @@ select {
   padding-left: 10px;
   color: #1f2937;
 }
+
+/* ==== PAGINATION STYLES ==== */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+  padding: 15px 0;
+  border-top: 1px solid #eee;
+}
+
+.pagination-info {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.pagination-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 5px;
+}
+
+/* Tombol Angka (1, 2, 3) */
+.page-num {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #1f2937;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.page-num:hover:not(.active) {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.page-num.active {
+  background: #1d4ed8; /* Biru sesuai tema btn-add kamu */
+  color: #fff;
+  border-color: #1d4ed8;
+  font-weight: bold;
+}
+
+/* Tombol Prev & Next */
+.btn-page {
+  padding: 8px 16px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #1f2937;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-page:hover:not(:disabled) {
+  background: #f8fafc;
+}
+
+.btn-page:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  border-color: #e2e8f0;
+}
