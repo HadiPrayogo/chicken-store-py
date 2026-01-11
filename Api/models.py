@@ -1,4 +1,13 @@
-from sqlalchemy import Column, Integer, String, DateTime, func, Enum, ForeignKey
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    DateTime,
+    func,
+    Enum,
+    ForeignKey,
+    Boolean,
+)
 from .database.database import Base
 from sqlalchemy.orm import relationship
 
@@ -16,13 +25,19 @@ class Product(Base):
         nullable=False,
         server_default="Bertumbuh",
     )
+    is_active = Column(Boolean, default=True)
 
-    def count_age(product, db, func, extract):
-        query = db.query(
-            product,
-            extract("day", func.age(func.current_date(), product.created_at)).label(
-                "age"
-            ),
+    def count_age(product, db, func, extract, limit, offset):
+        query = (
+            db.query(
+                product,
+                extract("day", func.age(func.current_date(), product.created_at)).label(
+                    "age"
+                ),
+            )
+            .filter(product.is_active != "False")
+            .limit(limit)
+            .offset(offset)
         )
 
         return query.all()
@@ -84,9 +99,7 @@ class OrderItem(Base):
     order_id = Column(
         Integer, ForeignKey("orders.id", ondelete="CASCADE"), nullable=False
     )
-    product_id = Column(
-        Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False
-    )
+    product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
     quantity = Column(Integer)
     subtotal = Column(Integer)
 

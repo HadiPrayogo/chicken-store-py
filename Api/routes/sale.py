@@ -9,9 +9,12 @@ from sqlalchemy.orm import Session, joinedload
 router = APIRouter(prefix="/sales", tags=["Sales"])
 
 
-@router.get("/", response_model=List[order.OrderOut])
+@router.get("/", response_model=order.OrderPagination)
 def get_sales(
-    db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.get_current_user),
+    limit: int = 8,
+    offset: int = 0,
 ):
     if current_user.role != "admin":
         return Response(status_code=status.HTTP_403_FORBIDDEN)
@@ -20,7 +23,13 @@ def get_sales(
         db.query(models.Order)
         .filter(models.Order.status == "Selesai")
         .options(joinedload(models.Order.owner))
+        .limit(limit)
+        .offset(offset)
         .all()
     )
 
-    return sales
+    total_count = (
+        db.query(models.Order).filter(models.Order.status == "Selesai").count()
+    )
+
+    return {"total": total_count, "data": sales}

@@ -9,6 +9,8 @@ async function getOrder() {
 
   const data = await res.json();
 
+  console.log(data);
+
   const orderList = document.querySelector('.order-list');
   let order = '';
 

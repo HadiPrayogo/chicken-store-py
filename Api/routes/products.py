@@ -11,19 +11,31 @@ router = APIRouter(prefix="/products", tags=["Products"])
 
 
 @router.get(
-    "/", status_code=status.HTTP_200_OK, response_model=List[product.ProductOut]
+    "/", status_code=status.HTTP_200_OK, response_model=product.ProductPagination
 )
 def get_products(
-    db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.get_current_user),
+    limit: int = 8,
+    offset: int = 0,
 ):
     if current_user.role != "admin":
         return Response(status_code=status.HTTP_403_FORBIDDEN)
 
     products = models.Product.count_age(
-        db=db, product=models.Product, func=func, extract=extract
+        db=db,
+        product=models.Product,
+        func=func,
+        extract=extract,
+        limit=limit,
+        offset=offset,
     )
 
-    return products
+    total_count = (
+        db.query(models.Product).filter(models.Product.is_active != "False").count()
+    )
+
+    return {"total": total_count, "data": products}
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -34,16 +46,10 @@ def delete_product(
 ):
     if current_user.role != "admin":
         return Response(status_code=status.HTTP_403_FORBIDDEN)
-    query = db.query(models.Product).filter(models.Product.id == id)
-    product = query.first()
+    product = db.query(models.Product).filter(models.Product.id == id).first()
 
-    if not product:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Product with id: {id} doesnt't exists",
-        )
-
-    query.delete(synchronize_session=False)
+    # Logic Soft Delete (Hanya Update kolom)
+    product.is_active = False
     db.commit()
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
@@ -107,7 +113,9 @@ def get_product_user(
             func.min(models.Product.created_at).label("batch_terlama"),
             func.count(models.Product.id).label("jumlah_batch"),
         )
-        .filter(models.Product.status == "Siap Jual")
+        .filter(
+            models.Product.status == "Siap Jual", models.Product.is_active != "False"
+        )
         .group_by(models.Product.name, models.Product.price)
         .having(func.sum(models.Product.stok) > 0)
         .all()

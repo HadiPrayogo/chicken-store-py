@@ -32,6 +32,14 @@ class ProductOut(BaseModel):
         from_attributes = True
 
 
+class ProductPagination(BaseModel):
+    total: int
+    data: List[ProductOut]
+
+    class Config:
+        from_attributes = True
+
+
 class ProductUpdate(BaseModel):
     stok: Optional[int] = None
     price: Optional[int] = None

@@ -169,7 +169,7 @@ async function checkout(items) {
   const data = await res.json();
 
   if (!res.ok) {
-    console.log(data);
+    alert(data['detail']);
   }
 
   if (res.ok) {

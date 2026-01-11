@@ -47,6 +47,11 @@ class OrderOut(BaseModel):
         from_attributes = True
 
 
+class OrderPagination(BaseModel):
+    total: int
+    data: List[OrderOut]
+
+
 class CartItem(BaseModel):
     product_name: str  # User pilih berdasarkan nama hasil GROUP BY
     quantity: int

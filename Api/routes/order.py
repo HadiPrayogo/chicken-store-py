@@ -21,9 +21,12 @@ from ..JWT import oauth2
 router = APIRouter(prefix="/order", tags=["Order"])
 
 
-@router.get("/", response_model=List[order.OrderOut])
+@router.get("/", response_model=order.OrderPagination)
 def get_all_order(
-    db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)
+    db: Session = Depends(get_db),
+    current_user: int = Depends(oauth2.get_current_user),
+    limit: int = 8,
+    offset: int = 0,
 ):
 
     if current_user.role != "admin":
@@ -33,10 +36,14 @@ def get_all_order(
         db.query(models.Order)
         .filter(models.Order.status != "Selesai")
         .options(joinedload(models.Order.owner))
+        .limit(limit)
+        .offset(offset)
         .all()
     )
 
-    return orders
+    total_count = db.query(models.Order).count()
+
+    return {"total": total_count, "data": orders}
 
 
 @router.put("/{id}")
@@ -199,60 +206,56 @@ def checkout_products(
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def cancel_order(
     id: int,
-    items: List[order.CartItem],
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
 ):
     if current_user.role != "user":
-        return Response(status_code=status.HTTP_403_FORBIDDEN)
+        raise HTTPException(status_code=403, detail="Forbidden")
 
-    for item in items:
-        batches = (
-            db.query(models.Product)
-            .filter(
-                models.Product.name == item.product_name,
-                models.Product.status == "Siap Jual",
-                models.Product.stok > 0,
-            )
-            .order_by(models.Product.id.asc())
-            .all()
-        )
-
-        sisa_kebutuhan = item.quantity
-
-        for batch in batches:
-            potong = min(batch.stok, sisa_kebutuhan)
-            batch.stok += potong
-            sisa_kebutuhan -= potong
-
-    query = db.query(models.Order).filter(models.Order.id == id)
-
-    found_order = query.first()
-
-    if found_order.payment_proof:
-        path_file = found_order.payment_proof
-
-        if os.path.exists(path_file):
-            try:
-                os.remove(path_file)
-                print(f"Berhasil menghapus: {path_file}")
-            except Exception as e:
-                print(f"Gagal menghapus file: {e}")
-        else:
-            print(f"File tidak ditemukan di path: {path_file}")
+    # 1. Cari Order-nya dulu
+    order_query = db.query(models.Order).filter(models.Order.id == id)
+    found_order = order_query.first()
 
     if not found_order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Order with id: {id} was not found",
+        raise HTTPException(status_code=404, detail="Order tidak ditemukan")
+
+    # 2. AMBIL RINCIAN ITEM (OrderItem) untuk mengembalikan stok
+    # Kita pakai data yang sudah tersimpan di database, bukan kirim dari frontend lagi
+    order_items = (
+        db.query(models.OrderItem).filter(models.OrderItem.order_id == id).all()
+    )
+
+    for item in order_items:
+        # Cari produk spesifik berdasarkan ID yang tersimpan di OrderItem
+        product = (
+            db.query(models.Product)
+            .filter(models.Product.id == item.product_id)
+            .first()
         )
 
-    query.delete(synchronize_session=False)
+        if product:
+            # Kembalikan stoknya
+            product.stok += item.quantity
+
+            # Jika sebelumnya "Habis", ubah kembali jadi "Siap Jual"
+            if product.status == "Habis" and product.stok > 0:
+                product.status = "Siap Jual"
+
+    # 3. Hapus file bukti pembayaran jika ada
+    if found_order.payment_proof:
+        if os.path.exists(found_order.payment_proof):
+            os.remove(found_order.payment_proof)
+
+    # 4. Hapus rincian item dulu (karena ada foreign key constraint)
+    db.query(models.OrderItem).filter(models.OrderItem.order_id == id).delete()
+
+    # 5. Hapus Order induk
+    order_query.delete(synchronize_session=False)
 
     db.commit()
-
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
